@@ -23,7 +23,9 @@ const openai = new OpenAI({
 
 const corsOptions = {
   origin: 'https://joyful-crepe-00afff.netlify.app',
-  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  preflightContinue: false,
+  optionsSuccessStatus: 204
 };
 
 app.use(cors(corsOptions));
