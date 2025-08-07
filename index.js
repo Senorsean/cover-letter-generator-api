@@ -10,7 +10,7 @@ const cors = require('cors');
 const OpenAI = require('openai');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const { knex, initializeDatabase } = require('./db');
+const { knex, initializeDatabase, ensureDefaultUser } = require('./db');
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret_key'; // Use a strong secret in production
 
@@ -268,7 +268,9 @@ app.post('/api/match-cv', authenticateToken, upload.single('cv'), async (req, re
 });
 
 initializeDatabase().then(() => {
-  app.listen(port, () => {
-    console.log(`Backend server listening at http://localhost:${port}`);
+  ensureDefaultUser().then(() => {
+    app.listen(port, () => {
+      console.log(`Backend server listening at http://localhost:${port}`);
+    });
   });
 });
